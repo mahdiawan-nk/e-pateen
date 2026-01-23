@@ -1,0 +1,78 @@
+
+services:
+  app:
+    build: .
+    container_name: patindesa_app
+    working_dir: /var/www/html
+    user: "${APP_UID:-1000}:${APP_GID:-1000}"
+    volumes:
+      - ./:/var/www/html
+    ports:
+      - "9080:9000"
+      - "5173:5173"
+    depends_on:
+      - mysql
+    networks:
+      - patindesa
+
+  node:
+    image: node:22
+    container_name: node_patindesa
+    working_dir: /var/www/html
+    user: "${APP_UID:-1000}:${APP_GID:-1000}"
+    volumes:
+      - ./:/var/www/html
+    # ports:
+    #   - "5173:5173"
+    networks:
+      - patindesa
+    command: tail -f /dev/null  # biar container node tetap hidup dan bisa exec manual
+
+  webserver:
+    image: nginx:alpine
+    container_name: nginx_patindesa
+    restart: unless-stopped
+    ports:
+      - "8000:80"
+    volumes:
+      - ./:/var/www/html
+      - ./nginx/conf.d:/etc/nginx/conf.d
+    depends_on:
+      - app
+    networks:
+      - patindesa
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_patindesa
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: e-patindesa
+      MYSQL_USER: e-patindesa
+      MYSQL_PASSWORD: e-patindesa
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - patindesa
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin_patindesa
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: mysql_patindesa   # Sesuai nama service MySQL
+      PMA_PORT: 3306
+    depends_on:
+      - mysql
+    networks:
+      - patindesa
+
+networks:
+  patindesa:
+
+volumes:
+  mysql_data:

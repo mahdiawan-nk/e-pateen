@@ -379,8 +379,8 @@ Proyek ini menggunakan lisensi **MIT**. Silakan gunakan, modifikasi, dan distrib
 
 Jika ada pertanyaan atau kerja sama:
 
-- Email: [admin@e-pateen.id](mailto:admin@e-pateen.id)
-- Website: [https://e-pateen.id](https://e-pateen.id)
+- Email: [admin](mailto:mahdiawan.nk@gmail.com)
+- Website: [https://patindesa.com](https://patindesa.com)
 
 ---
 

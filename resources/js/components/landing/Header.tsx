@@ -40,8 +40,25 @@ export default function Header() {
                         ))}
                     </div>
 
-                    {/* Desktop CTA */}
-                    <div className="hidden md:block">
+                    {/* Desktop Actions */}
+                    <div className="hidden md:flex items-center gap-3">
+                        {/* Login */}
+                        <Link
+                            href="/login"
+                            className="rounded-xl px-4 py-2 text-sm font-semibold text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition"
+                        >
+                            Login
+                        </Link>
+
+                        {/* Register */}
+                        <Link
+                            href="/register"
+                            className="rounded-xl border border-blue-600 px-4 py-2 text-sm font-semibold text-blue-600 hover:bg-blue-50 dark:border-blue-400 dark:text-blue-400 dark:hover:bg-blue-400/10 transition"
+                        >
+                            Daftar
+                        </Link>
+
+                        {/* CTA */}
                         <a
                             href="https://wa.me/628123456789"
                             target="_blank"
@@ -57,9 +74,8 @@ export default function Header() {
                         onClick={() => setIsOpen((prev) => !prev)}
                         aria-expanded={isOpen}
                         aria-label="Toggle navigation"
-                        className={`md:hidden rounded-lg p-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/10 transition ${
-                            isOpen ? "rotate-90" : ""
-                        }`}
+                        className={`md:hidden rounded-lg p-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/10 transition ${isOpen ? "rotate-90" : ""
+                            }`}
                     >
                         {!isOpen ? (
                             <svg
@@ -95,11 +111,10 @@ export default function Header() {
 
                 {/* Mobile Menu */}
                 <div
-                    className={`md:hidden mt-4 space-y-4 rounded-2xl border border-gray-200/70 dark:border-white/10 bg-white dark:bg-gray-900 p-5 shadow-xl transition-all duration-300 ${
-                        isOpen
+                    className={`md:hidden mt-4 space-y-4 rounded-2xl border border-gray-200/70 dark:border-white/10 bg-white dark:bg-gray-900 p-5 shadow-xl transition-all duration-300 ${isOpen
                             ? "opacity-100 translate-y-0"
                             : "opacity-0 -translate-y-2 pointer-events-none"
-                    }`}
+                        }`}
                 >
                     {MENU.map((item) => (
                         <a
@@ -112,6 +127,25 @@ export default function Header() {
                         </a>
                     ))}
 
+                    {/* Mobile Auth */}
+                    <div className="flex gap-3 pt-3">
+                        <Link
+                            href="/login"
+                            onClick={() => setIsOpen(false)}
+                            className="flex-1 rounded-xl border px-4 py-2 text-center text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/10 transition"
+                        >
+                            Login
+                        </Link>
+                        <Link
+                            href="/register"
+                            onClick={() => setIsOpen(false)}
+                            className="flex-1 rounded-xl bg-blue-600 px-4 py-2 text-center text-sm font-semibold text-white hover:bg-blue-700 dark:hover:bg-blue-500 transition"
+                        >
+                            Daftar
+                        </Link>
+                    </div>
+
+                    {/* Mobile CTA */}
                     <a
                         href="https://wa.me/628123456789"
                         target="_blank"

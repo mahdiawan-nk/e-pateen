@@ -161,6 +161,22 @@ export default function Index({ users, filters, pagination }: { users: any, filt
         }
     };
 
+    const deleteUser = (user: User) => {
+        setDeletingUser(user);
+        setShowDeleteModal(true);
+    };
+
+    const closeDeleteModal = () => {
+        setShowDeleteModal(false);
+        setDeletingUser(null);
+    };
+
+    const submitDelete = () => {
+        form.delete(`/users/${deletingUser?.id}`, {
+            onSuccess: () => closeDeleteModal(),
+        });
+    };
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Data User" />
@@ -282,7 +298,7 @@ export default function Index({ users, filters, pagination }: { users: any, filt
                                                     <Pencil className="h-3.5 w-3.5" />
                                                     Edit
                                                 </button>
-                                                <button className="btn btn-xs btn-outline btn-error">
+                                                <button onClick={() => deleteUser(user)} className="btn btn-xs btn-outline btn-error">
                                                     <Trash className="h-3.5 w-3.5" />
                                                     Hapus
                                                 </button>
@@ -494,7 +510,43 @@ export default function Index({ users, filters, pagination }: { users: any, filt
                     </form>
                 </div>
             </dialog>
+            {/* DELETE MODAL */}
+            {showDeleteModal && deletingUser && (
+                <dialog open className="modal">
+                    <div className="modal-box max-w-sm">
+                        <h3 className="font-semibold text-lg mb-3">
+                            Konfirmasi Penghapusan
+                        </h3>
+                        <p className="text-sm text-neutral-500 mb-6">
+                            Hapus kolam <b>{deletingUser.name}</b>? Data tidak bisa
+                            dikembalikan.
+                        </p>
 
+                        <div className="flex justify-end gap-2">
+                            <button
+                                onClick={() => setShowDeleteModal(false)}
+                                className="btn btn-outline"
+                            >
+                                Batal
+                            </button>
+                            <button
+                                onClick={() =>
+                                    router.delete(`/users/${deletingUser.id}`, {
+                                        onSuccess: () => setShowDeleteModal(false),
+                                    })
+                                }
+                                className="btn btn-error"
+                            >
+                                Hapus
+                            </button>
+                        </div>
+                    </div>
+                    <div
+                        className="modal-backdrop"
+                        onClick={() => setShowDeleteModal(false)}
+                    />
+                </dialog>
+            )}
         </AppLayout>
     );
 }

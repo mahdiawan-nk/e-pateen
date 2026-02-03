@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-
+use Illuminate\Support\Facades\Auth;
 class UserController extends Controller
 {
     /**
@@ -13,6 +13,7 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
+        $user = Auth::user();
         $search = $request->input('search');
         $roleFilter = $request->input('role');
 
@@ -21,13 +22,26 @@ class UserController extends Controller
         $offset = ($page - 1) * $perPage;
 
         $query = User::query()
+            // ❌ Jangan tampilkan user yang sedang login
+            ->where('id', '!=', $user->id)
+
+            // Role-based visibility
+            ->when(
+                $user->role !== 'administrator',
+                fn($q) => $q->where('role', 'pembudidaya')
+            )
+
+            // Search
             ->when($search, function ($q) use ($search) {
                 $q->where(function ($sub) use ($search) {
                     $sub->where('name', 'like', "%{$search}%")
                         ->orWhere('email', 'like', "%{$search}%");
                 });
             })
+
+            // Filter role
             ->when($roleFilter, fn($q) => $q->where('role', $roleFilter));
+
 
         // Total data
         $total = $query->count();

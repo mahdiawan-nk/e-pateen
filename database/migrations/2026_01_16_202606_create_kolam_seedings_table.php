@@ -49,10 +49,10 @@ return new class extends Migration {
                 ->on('kolams')
                 ->cascadeOnDelete();
 
-            $table->foreign('initial_movement_id')
-                ->references('id')
-                ->on('kolam_stock_movements')
-                ->nullOnDelete();
+            // $table->foreign('initial_movement_id')
+            //     ->references('id')
+            //     ->on('kolam_stock_movements')
+            //     ->nullOnDelete();
 
             $table->foreign('created_by')
                 ->references('id')
